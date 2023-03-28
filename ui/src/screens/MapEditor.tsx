@@ -1,5 +1,7 @@
+import Map from "components/Map";
+
 const MapEditor = () => {
-    return <div>Map editor works!</div>
+    return <div><Map /></div>
 }
 
 export default MapEditor;
