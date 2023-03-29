@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --text-font-family: 'Questrial', sans-serif;
+  --brand-color: #2a2a2a;
+}
+
 body {
   margin: 0;
+}
+
+input {
+  outline: none;
+  font-family: var(--text-font-family);
+  color: var(--brand-color);
 }

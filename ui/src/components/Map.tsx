@@ -1,35 +1,49 @@
 import { DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM } from "lib/constants";
 import { ICoordinates } from "lib/interfaces";
 import mapboxgl from "mapbox-gl";
-import { useEffect, useRef, useState } from "react";
-
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?? "";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const Map = () => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [coordinates, setCoordinates] = useState<ICoordinates>({
-    lat: DEFAULT_LAT,
-    lng: DEFAULT_LNG,
-    zoom: DEFAULT_ZOOM,
-  });
+  const [map, setMap] = useState<mapboxgl.Map | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!map.current) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current as HTMLElement,
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?? "";
+
+    const initializeMap = ({
+      setMap,
+      mapContainerRef,
+    }: {
+      setMap: Dispatch<SetStateAction<mapboxgl.Map | null>>;
+      mapContainerRef: RefObject<HTMLDivElement>;
+    }) => {
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/streets-v12",
-        center: [coordinates.lng, coordinates.lat],
-        zoom: coordinates.zoom,
+        center: [DEFAULT_LAT, DEFAULT_LNG],
+        zoom: DEFAULT_ZOOM,
       });
-    }
-  });
+
+      map.on("load", () => {
+        setMap(map);
+      });
+    };
+
+    if (!map) initializeMap({ setMap, mapContainerRef });
+  }, [map]);
 
   return (
-      <div className="w-full h-screen bg-black">
-          <div ref={mapContainer} className="h-screen" />
-      </div>
-  )
+    <div>
+      <div ref={mapContainerRef} className="relative h-screen" />
+    </div>
+  );
 };
 
 export default Map;
