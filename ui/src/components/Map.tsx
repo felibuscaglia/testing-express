@@ -1,5 +1,4 @@
 import { DEFAULT_LAT, DEFAULT_LNG, DEFAULT_ZOOM } from "lib/constants";
-import { ICoordinates } from "lib/interfaces";
 import mapboxgl from "mapbox-gl";
 import {
   Dispatch,
