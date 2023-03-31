@@ -27,17 +27,15 @@ const initializeMap = ({
   });
 
   const geocoderContainer = document.createElement("div");
+  geocoderContainer.className = "flex items-center mt-7 absolute left-1/4 w-4/12";
+
   const searchBtn = document.createElement("button");
-  searchBtn.style.position = "absolute";
-  searchBtn.style.left = "29.8%";
-  searchBtn.className = "h-10 bg-main-brand-color px-4";
+  searchBtn.className = "h-10 bg-main-brand-color px-4 relative";
   const searchIconHTML = ReactDOMServer.renderToString(
     <Search size={20} color="white" />
   );
   searchBtn.innerHTML = searchIconHTML;
 
-  geocoderContainer.className = "geocoder-container";
-  geocoderContainer.appendChild(searchBtn);
 
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -51,6 +49,7 @@ const initializeMap = ({
     setMap(map);
     geocoderContainer.appendChild(geocoder.onAdd(map));
     map.getContainer().appendChild(geocoderContainer);
+    geocoderContainer.appendChild(searchBtn);
   });
 };
 

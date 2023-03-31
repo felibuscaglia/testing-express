@@ -21,16 +21,10 @@ input {
   height: 2.5rem;
   display: flex;
   align-items: center;
-  width: 27% !important; 
-  max-width: 27% !important;
+  width: 100% !important; 
+  max-width: 100% !important;
   box-shadow: none !important;
-  margin-top: 1.75rem;
-  margin-left: 2.5rem;
   border-radius: 0 !important;
-}
-
-.mapboxgl-ctrl-geocoder:focus {
-  border: 1px solid var(--brand-color) !important;
 }
 
 .mapboxgl-ctrl-geocoder--icon-search {
