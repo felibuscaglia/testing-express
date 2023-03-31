@@ -7,7 +7,8 @@ module.exports = {
         "main-brand-color": "#2a2a2a",
       },
       fontFamily: {
-        text: ['Questrial']
+        text: ["Questrial"],
+        title: ["Playfair Display"],
       },
     },
   },

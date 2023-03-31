@@ -1,13 +1,11 @@
 import Map from "components/Map";
-import PlaceSearcher from "components/PlaceSearcher";
+import MapInfoEditor from "components/MapInfoEditor";
 
 const MapEditor = () => {
   return (
     <div>
+      <MapInfoEditor />
       <Map />
-      <div>
-        <PlaceSearcher />
-      </div>
     </div>
   );
 };
