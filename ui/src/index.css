@@ -17,11 +17,25 @@ input {
   color: var(--brand-color);
 }
 
+button {
+  transition: .2s ease all;
+}
+
+span {
+  font-family: var(--text-font-family);
+}
+
+input[type='checkbox'] {
+  accent-color: var(--brand-color);
+}
+
+/* Mapbox */
+
 .mapboxgl-ctrl-geocoder {
   height: 2.5rem;
   display: flex;
   align-items: center;
-  width: 100% !important; 
+  width: 100% !important;
   max-width: 100% !important;
   box-shadow: none !important;
   border-radius: 0 !important;
