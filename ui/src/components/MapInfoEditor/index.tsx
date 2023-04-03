@@ -1,3 +1,5 @@
+import Modal from "components/Modal";
+import { useState } from "react";
 import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
@@ -20,7 +22,7 @@ const MapInfoEditor = () => {
       <Actions />
       <Layer />
       <button className="px-4 py-1.5 flex items-center text-xs bg-main-brand-color text-white font-text px-2 py-1 border-x border-b border-main-brand-color hover:bg-transparent hover:text-main-brand-color gap-1">
-        <PenTool size={14}  />
+        <PenTool size={14} />
         <span>Change map style</span>
       </button>
     </div>

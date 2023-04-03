@@ -13,7 +13,7 @@ const Layer = () => {
       <button className="flex items-center text-xs bg-main-brand-color text-white font-text px-2 py-1 border border-main-brand-color hover:bg-transparent hover:text-main-brand-color gap-1">
         <Upload size={14} /> <span>Import</span>
       </button>
-      <span className="text-sm text-center w-full text-bold text-[#777777] mt-8 inline-block underline">
+      <span className="text-sm text-center w-full text-bold text-[#777777] mt-4 mb-3 inline-block underline">
         No places yet.
       </span>
     </div>
