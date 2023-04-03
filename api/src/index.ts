@@ -1,12 +1,9 @@
-import express from "express";
-require('dotenv').config();
+import App from "./app";
+import UserController from "./controllers/user.controller";
 
-const app = express();
+const controllers = [new UserController()];
+const app = new App(controllers, Number(process.env.PORT));
 
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+app.listen();
 
-app.listen(process.env.PORT, () => {
-  console.log("Server running on port " + process.env.PORT);
-});
+export default app;
