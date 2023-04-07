@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 
 class UserController {
-  public path = "/user";
+  public path = "/users";
   public router: Router = Router();
 
   constructor() {
@@ -9,6 +9,7 @@ class UserController {
   }
 
   public initializeRoutes() {
+    // this.router.get('/', (req: Request, res: Response) => res.send("Hello world!"));
     // this.router.use(this.validateInput);
     // Controller endpoints
     // this.router.post(this.path + "/login", this.login);

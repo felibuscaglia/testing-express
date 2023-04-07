@@ -19,14 +19,22 @@ input {
 
 button {
   transition: .2s ease all;
+  font-family: var(--text-font-family);
 }
 
-span {
+span, p {
   font-family: var(--text-font-family);
 }
 
 input[type='checkbox'] {
   accent-color: var(--brand-color);
+}
+
+.screen-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Mapbox */

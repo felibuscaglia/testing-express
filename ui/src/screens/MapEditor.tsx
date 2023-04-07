@@ -3,10 +3,10 @@ import MapInfoEditor from "components/MapInfoEditor";
 
 const MapEditor = () => {
   return (
-    <div>
+    <main>
       <MapInfoEditor />
       <Map />
-    </div>
+    </main>
   );
 };
 

@@ -1,16 +1,16 @@
 import express from "express";
-import { Connection, DataSource } from "typeorm";
+import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import dataSource from "../ormConfig.js";
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import morgan from 'morgan';
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
 
 dotenv.config();
 class App {
   public app: express.Application;
   public port: number;
-  public connection: DataSource; 
+  public connection: DataSource;
 
   constructor(controllers: any[], port: number) {
     this.app = express();
@@ -37,7 +37,8 @@ class App {
 
   private initializeControllers(controllers: any[]) {
     controllers.forEach((controller) => {
-      this.app.use("/", controller.router);
+      console.log({ controller });
+      this.app.use(controller.path, controller.router);
     });
   }
 

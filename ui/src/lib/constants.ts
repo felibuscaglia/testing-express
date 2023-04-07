@@ -7,3 +7,7 @@ export const MAPBOX_BASE_API_URL = "https://api.mapbox.com/";
 export const MAPBOX_API_PATHS = {
   PLACES: "geocoding/v5/mapbox.places/",
 };
+
+export const MAIN_BRAND_COLOR = "#2A2A2A";
+
+export const APP_NAME = "AltasCraft";

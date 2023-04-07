@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "nodemon --exec ts-node src/index.ts",
     "build": "tsc"
   },
   "author": "Felipe Buscaglia",
@@ -23,5 +23,8 @@
     "ts-node": "^10.9.1",
     "typeorm": "^0.3.12",
     "typescript": "^5.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
