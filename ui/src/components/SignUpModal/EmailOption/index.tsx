@@ -1,3 +1,4 @@
+import { API_CLIENT as apiClient } from "lib/axios/apiClient";
 import { BTN_CLASSNAMES, MAIN_BRAND_COLOR } from "lib/constants";
 import { validateEmail } from "lib/helpers";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -35,6 +36,13 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     setInput({
       ...input,
       [key]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    apiClient.post("/users", input).catch(({ message }) => {
+      message = message ?? "Unexpected error";
+      
     });
   };
 
@@ -92,6 +100,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           " mt-4 w-3/5 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white disabled:border-gray-300"
         }
         disabled={!isInputValid}
+        onClick={handleSubmit}
       >
         Continue
       </button>

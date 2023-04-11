@@ -1,15 +1,19 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Response } from "express";
+import { SignUpRequest } from "types/UserDto.type";
 
 class UserController {
-  public path = "/users";
-  public router: Router = Router();
+  public readonly path = "/users";
+  public readonly router: Router = Router();
 
   constructor() {
     this.initializeRoutes();
   }
 
   public initializeRoutes() {
-    // this.router.get('/', (req: Request, res: Response) => res.send("Hello world!"));
+    this.router.post(
+      "/",
+      async (req: SignUpRequest, res: Response) => await this.signUp(req, res)
+    );
     // this.router.use(this.validateInput);
     // Controller endpoints
     // this.router.post(this.path + "/login", this.login);
@@ -18,6 +22,19 @@ class UserController {
     // this.router.get(this.path + "/:id", this.getUser);
     // this.router.put(this.path + "/:id", this.updateUser);
     // this.router.delete(this.path + "/:id", this.deleteUser);
+  }
+
+  private async signUp(req: SignUpRequest, res: Response) {
+    try {
+      const { password, email } = req.body;
+
+      if (!password || !email) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: "Internal server error" });
+    }
   }
 }
 

@@ -5,6 +5,8 @@ import dataSource from "../ormConfig.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import apiKeyMiddleware from "./middlewares/apiKey.middleware";
+import corsMiddleware from "./middlewares/cors.middleware";
 
 dotenv.config();
 class App {
@@ -33,11 +35,12 @@ class App {
     this.app.use(bodyParser.json({ limit: "50mb" }));
     this.app.use(cookieParser());
     this.app.use(morgan("dev"));
+    this.app.use(corsMiddleware([process.env.UI_URL]));
+    this.app.use(apiKeyMiddleware);
   }
 
   private initializeControllers(controllers: any[]) {
     controllers.forEach((controller) => {
-      console.log({ controller });
       this.app.use(controller.path, controller.router);
     });
   }
