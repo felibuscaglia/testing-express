@@ -11,3 +11,7 @@ export const MAPBOX_API_PATHS = {
 export const MAIN_BRAND_COLOR = "#2A2A2A";
 
 export const APP_NAME = "AltasCraft";
+
+// Tailwind
+export const BTN_CLASSNAMES =
+  "text-sm bg-main-brand-color border border-main-brand-color py-2 px-4 text-white rounded-full hover:bg-transparent hover:text-main-brand-color";

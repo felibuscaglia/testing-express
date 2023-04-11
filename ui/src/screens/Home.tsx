@@ -1,4 +1,5 @@
-import Modal from "components/Modal";
+import SignUpModal from "components/SignUpModal";
+import { BTN_CLASSNAMES } from "lib/constants";
 import { useState } from "react";
 
 const HomeScreen = () => {
@@ -6,12 +7,14 @@ const HomeScreen = () => {
   return (
     <main>
       <button
-        className="text-sm bg-main-brand-color border border-main-brand-color py-2 px-4 text-white rounded-full hover:bg-transparent hover:text-main-brand-color"
+        className={BTN_CLASSNAMES}
         onClick={() => setDisplaySignUpModal(true)}
       >
         Get started
       </button>
-      {displaySignUpModal && <Modal onCloseBtnClick={() => setDisplaySignUpModal(false)} />}
+      {displaySignUpModal && (
+        <SignUpModal closeModal={() => setDisplaySignUpModal(false)} />
+      )}
     </main>
   );
 };

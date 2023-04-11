@@ -1,5 +1,3 @@
-import Modal from "components/Modal";
-import { useState } from "react";
 import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
