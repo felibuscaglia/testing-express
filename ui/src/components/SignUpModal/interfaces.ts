@@ -1,4 +1,4 @@
-import EmailSignUpOption from "./Email";
+import EmailSignUpOption from "./EmailOption";
 import SplashSignUpModal from "./SplashOption";
 
 export enum SIGN_UP_OPTION {

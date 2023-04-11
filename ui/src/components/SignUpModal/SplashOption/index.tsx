@@ -35,6 +35,7 @@ const SplashSignUpModal: FC<ISelectedComponentProps> = ({
             icon={icon}
             iconClassnames={iconClassnames}
             onClick={() => setSelectedOption(option)}
+            key={`social-login-btn-${option}`}
           />
         ))}
       </div>

@@ -1,7 +1,10 @@
 import { BTN_CLASSNAMES, MAIN_BRAND_COLOR } from "lib/constants";
-import { FC, useState } from "react";
+import { validateEmail } from "lib/helpers";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "react-feather";
-import { ISelectedComponentProps, SIGN_UP_OPTION } from "./interfaces";
+import { ISelectedComponentProps, SIGN_UP_OPTION } from "../interfaces";
+import PasswordValidator from "./PasswordValidator";
+import { PASSWORD_VALIDATIONS } from "./validators";
 
 const LABEL_CLASSNAMES = "text-sm text-main-brand-color capitalize";
 const INPUT_CLASSNAMES =
@@ -23,6 +26,10 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
 }) => {
   const [input, setInput] = useState<IInput>({ email: "", password: "" });
   const [focusedInput, setFocusedInput] = useState<Input>();
+  const [validations, setValidations] = useState<{ [key: string]: boolean }>({
+    [Input.EMAIL]: false,
+    [Input.PASSWORD]: false,
+  });
 
   const handleInputChange = (key: string, value: string) => {
     setInput({
@@ -31,11 +38,36 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     });
   };
 
+  const isEmailValid = useMemo(() => validateEmail(input.email), [input.email]);
+
+  const isPasswordValid = useMemo(() => {
+    const passwordValidations = PASSWORD_VALIDATIONS.map(({ validator }) =>
+      validator(input.password)
+    );
+    return passwordValidations.every((isValid) => isValid);
+  }, [input.password]);
+
+  useEffect(() => {
+    setValidations({
+      ...validations,
+      [Input.EMAIL]: isEmailValid,
+    });
+  }, [isEmailValid]);
+
+  useEffect(() => {
+    setValidations({
+      ...validations,
+      [Input.PASSWORD]: isPasswordValid,
+    });
+  }, [isPasswordValid]);
+
+  const isInputValid = isEmailValid && isPasswordValid;
+
   return (
     <section className="py-11 px-14 flex flex-col items-center">
       <h2 className="text-3xl mb-16">Sign up with your email</h2>
       {Object.entries(input).map(([key, value]) => (
-        <div className={INPUT_CONTAINER_CLASSNAMES}>
+        <div className={INPUT_CONTAINER_CLASSNAMES} key={`input-${key}`}>
           <label htmlFor={key} className={LABEL_CLASSNAMES}>
             {key}
           </label>
@@ -51,8 +83,18 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           />
         </div>
       ))}
-      {/* {focusedInput === Input.PASSWORD ?} */}
-      <button className={BTN_CLASSNAMES + " mt-4 w-3/5"}>Continue</button>
+      {focusedInput === Input.PASSWORD && (
+        <PasswordValidator password={input.password} />
+      )}
+      <button
+        className={
+          BTN_CLASSNAMES +
+          " mt-4 w-3/5 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white disabled:border-gray-300"
+        }
+        disabled={!isInputValid}
+      >
+        Continue
+      </button>
       <button
         className="flex items-center mt-8"
         onClick={() => setSelectedOption(SIGN_UP_OPTION.NONE)}

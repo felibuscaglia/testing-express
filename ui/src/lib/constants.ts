@@ -15,3 +15,6 @@ export const APP_NAME = "AltasCraft";
 // Tailwind
 export const BTN_CLASSNAMES =
   "text-sm bg-main-brand-color border border-main-brand-color py-2 px-4 text-white rounded-full hover:bg-transparent hover:text-main-brand-color";
+
+// Regex
+export const EMAIL_REGEX = /\S+@\S+\.\S+/;
