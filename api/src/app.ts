@@ -35,12 +35,10 @@ class App {
     );
 
     const connection = new DataSource(ormConfig);
-    console.log(connection);
     if (!connection) {
       throw new Error("Error connecting to database");
     }
     await connection.initialize();
-    console.log(connection.options.entities)
     this.connection = connection;
   }
 

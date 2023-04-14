@@ -2,7 +2,9 @@ import { CreateUserDTO } from "../dto/CreateUser.dto";
 import { User } from "../entities";
 import { Router, Response } from "express";
 import { SignUpRequest } from "types/UserDto.type";
-import { validate } from 'class-validator';
+import { validate } from "class-validator";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 class UserController {
   public readonly path = "/users";
@@ -30,15 +32,21 @@ class UserController {
   private async signUp(req: SignUpRequest, res: Response) {
     try {
       const { email, password } = req.body;
-      const errors = await this.validateSignUpRequest(email ?? '', password ?? '');
+      const errors = await this.validateSignUpRequest(
+        email ?? "",
+        password ?? ""
+      );
 
       if (errors.length) {
-        const errorMessages = errors.map(error => Object.values(error.constraints)).flat();
-        return res.status(400).json({ message: 'Validation errors', errors: errorMessages });
+        const errorMessages = errors
+          .map((error) => Object.values(error.constraints))
+          .flat();
+        return res
+          .status(400)
+          .json({ message: "Validation errors", errors: errorMessages });
       }
 
-
-      const existingUser = User.findOneBy({ email });
+      const existingUser = await User.findOneBy({ email });
 
       if (existingUser) {
         return res
@@ -47,10 +55,21 @@ class UserController {
       } else {
         const user = new User();
         user.email = email;
-        user.password = password;
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
         await user.save();
 
-        return res.status(201).json({ message: "User created successfully." })
+        console.log(process.env.JWT_SECRET_KEY);
+
+        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+          expiresIn: "1h",
+        });
+
+        return res
+          .cookie("token", token, { httpOnly: true })
+          .status(200)
+          .send({ message: "User created successfully." });
       }
     } catch (err) {
       console.error(err);

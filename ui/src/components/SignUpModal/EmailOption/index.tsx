@@ -52,7 +52,9 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
 
     apiClient
       .post("/users", input)
-      .then(({ data }) => console.log({ data }))
+      .then(({ data }) => {
+        window.location.href = '/user'
+      })
       .catch((error) => {
         let errorMessage = UNEXPECTED_ERROR_MESSAGE;
         let errorsList: string[] | undefined;
