@@ -1,3 +1,4 @@
+import { IAPIError } from "lib/interfaces";
 import EmailSignUpOption from "./EmailOption";
 import SplashSignUpModal from "./SplashOption";
 
@@ -14,7 +15,7 @@ export interface IModalProps {
 
 export interface ISelectedComponentProps {
   setSelectedOption: (option: SIGN_UP_OPTION) => void;
-  setError: (message: string) => void;
+  setError: (apiError: IAPIError | null) => void;
 }
 
 export const SELECTED_OPTION_COMPONENT = {

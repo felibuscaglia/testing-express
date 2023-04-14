@@ -10,7 +10,7 @@ const PasswordValidator: FC<IPasswordValidatorProps> = ({ password }) => {
   return (
     <section>
       {PASSWORD_VALIDATIONS.map(({ label, validator, key }) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" key={'password-validator-' + key}>
           {validator(password) ? <CheckCircle /> : <XCircle />}
           <p className="text-sm">{label}</p>
         </div>

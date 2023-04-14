@@ -6,10 +6,11 @@ import {
   SIGN_UP_OPTION,
   SELECTED_OPTION_COMPONENT,
 } from "./interfaces";
+import { IAPIError } from "lib/interfaces";
 
 const Modal: FC<IModalProps> = ({ closeModal }) => {
   const [selectedOption, setSelectedOption] = useState(SIGN_UP_OPTION.NONE);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<IAPIError | null>(null);
 
   const SelectedComponent = SELECTED_OPTION_COMPONENT[selectedOption];
 
@@ -23,7 +24,7 @@ const Modal: FC<IModalProps> = ({ closeModal }) => {
             strokeWidth={1}
           />
         </button>
-        {error && <ErrorMessage message={error} />}
+        {error && <ErrorMessage message={error.message} errors={error.errors} />}
         {
           <SelectedComponent
             setSelectedOption={setSelectedOption}

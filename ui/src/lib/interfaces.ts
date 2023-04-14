@@ -3,3 +3,8 @@ export interface ICoordinates {
     lat: number;
     zoom: number;
 }
+
+export interface IAPIError {
+    message: string;
+    errors?: string[];
+}

@@ -10,6 +10,7 @@ import { ChevronLeft } from "react-feather";
 import { ISelectedComponentProps, SIGN_UP_OPTION } from "../interfaces";
 import PasswordValidator from "./PasswordValidator";
 import { PASSWORD_VALIDATIONS } from "./validators";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const LABEL_CLASSNAMES = "text-sm text-main-brand-color capitalize";
 const INPUT_CLASSNAMES =
@@ -32,6 +33,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
 }) => {
   const [input, setInput] = useState<IInput>({ email: "", password: "" });
   const [focusedInput, setFocusedInput] = useState<Input>();
+  const [loading, setLoading] = useState(false);
   const [validations, setValidations] = useState<{ [key: string]: boolean }>({
     [Input.EMAIL]: false,
     [Input.PASSWORD]: false,
@@ -45,10 +47,28 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
   };
 
   const handleSubmit = () => {
-    apiClient.post("/users", input).catch(({ message }) => {
-      message = message ?? UNEXPECTED_ERROR_MESSAGE;
-      setError(message);
-    });
+    setLoading(true);
+    setError(null); // Setting error as null in case there was an error setted.
+
+    apiClient
+      .post("/users", input)
+      .then(({ data }) => console.log({ data }))
+      .catch((error) => {
+        let errorMessage = UNEXPECTED_ERROR_MESSAGE;
+        let errorsList: string[] | undefined;
+
+        if (error.response) {
+          const { data } = error.response;
+          errorMessage = data.message;
+          errorsList = data.errors;
+        }
+
+        setError({
+          message: errorMessage,
+          errors: errorsList,
+        });
+        setLoading(false);
+      });
   };
 
   const isEmailValid = useMemo(() => validateEmail(input.email), [input.email]);
@@ -102,12 +122,19 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
       <button
         className={
           BTN_CLASSNAMES +
-          " mt-4 w-3/5 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white disabled:border-gray-300"
+          " mt-4 w-3/5 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white disabled:border-gray-300 flex items-center justify-center"
         }
-        disabled={!isInputValid}
+        disabled={!isInputValid || loading}
         onClick={handleSubmit}
       >
-        Continue
+        {!loading && "Continue"}
+        <ClipLoader
+          color={"white"}
+          loading={loading}
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </button>
       <button
         className="flex items-center mt-8"

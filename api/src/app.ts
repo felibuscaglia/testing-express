@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import apiKeyMiddleware from "./middlewares/apiKey.middleware";
 import corsMiddleware from "./middlewares/cors.middleware";
+import entities from './entities';
 
 dotenv.config();
 class App {
@@ -23,10 +24,23 @@ class App {
   }
 
   private async initializeModels() {
-    const connection = new DataSource(dataSource);
+    const ormConfig = dataSource(
+      process.env.DB_HOST,
+      process.env.DB_PORT,
+      process.env.DB_USERNAME,
+      process.env.DB_PASSWORD,
+      process.env.DB_NAME,
+      process.env.NODE_ENV != "production",
+      entities
+    );
+
+    const connection = new DataSource(ormConfig);
+    console.log(connection);
     if (!connection) {
       throw new Error("Error connecting to database");
     }
+    await connection.initialize();
+    console.log(connection.options.entities)
     this.connection = connection;
   }
 

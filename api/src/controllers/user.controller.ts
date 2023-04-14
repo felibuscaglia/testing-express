@@ -1,6 +1,8 @@
-import { User } from "entities";
+import { CreateUserDTO } from "../dto/CreateUser.dto";
+import { User } from "../entities";
 import { Router, Response } from "express";
 import { SignUpRequest } from "types/UserDto.type";
+import { validate } from 'class-validator';
 
 class UserController {
   public readonly path = "/users";
@@ -27,11 +29,14 @@ class UserController {
 
   private async signUp(req: SignUpRequest, res: Response) {
     try {
-      const { password, email } = req.body;
+      const { email, password } = req.body;
+      const errors = await this.validateSignUpRequest(email ?? '', password ?? '');
 
-      if (!password || !email) {
-        return res.status(400).json({ message: "All fields are required." });
+      if (errors.length) {
+        const errorMessages = errors.map(error => Object.values(error.constraints)).flat();
+        return res.status(400).json({ message: 'Validation errors', errors: errorMessages });
       }
+
 
       const existingUser = User.findOneBy({ email });
 
@@ -39,12 +44,23 @@ class UserController {
         return res
           .status(400)
           .json({ message: "A user with that email already exists." });
+      } else {
+        const user = new User();
+        user.email = email;
+        user.password = password;
+        await user.save();
+
+        return res.status(201).json({ message: "User created successfully." })
       }
-      
     } catch (err) {
       console.error(err);
       res.status(500).send({ message: "Internal server error." });
     }
+  }
+
+  private validateSignUpRequest(email: string, password: string) {
+    const createUserDTO = new CreateUserDTO(email, password);
+    return validate(createUserDTO);
   }
 }
 
