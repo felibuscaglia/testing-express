@@ -9,6 +9,8 @@ const corsOptions = (allowedOrigins: string[]) => {
         callback(new Error("Not allowed by CORS"));
       }
     },
+    allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
+    credentials: true,
   };
 
   return cors(corsOptions);

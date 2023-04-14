@@ -60,16 +60,15 @@ class UserController {
         user.password = hashedPassword;
         await user.save();
 
-        console.log(process.env.JWT_SECRET_KEY);
-
-        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
-          expiresIn: "1h",
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+          expiresIn: "7 days",
         });
 
+        res.cookie("token", token, { httpOnly: true });
+
         return res
-          .cookie("token", token, { httpOnly: true })
           .status(200)
-          .send({ message: "User created successfully." });
+          .send({ message: "User created successfully.", token });
       }
     } catch (err) {
       console.error(err);

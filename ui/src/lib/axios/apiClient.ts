@@ -5,6 +5,7 @@ const API_CLIENT = axios.create({
   headers: {
     "x-api-key": process.env.REACT_APP_API_KEY,
   },
+  withCredentials: true,
 });
 
 export { API_CLIENT };
