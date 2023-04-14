@@ -18,3 +18,5 @@ export const BTN_CLASSNAMES =
 
 // Regex
 export const EMAIL_REGEX = /\S+@\S+\.\S+/;
+
+export const UNEXPECTED_ERROR_MESSAGE = "An unexpected error ocurred.";

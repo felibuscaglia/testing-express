@@ -1,3 +1,4 @@
+import { User } from "entities";
 import { Router, Response } from "express";
 import { SignUpRequest } from "types/UserDto.type";
 
@@ -29,11 +30,20 @@ class UserController {
       const { password, email } = req.body;
 
       if (!password || !email) {
-        return res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "All fields are required." });
       }
+
+      const existingUser = User.findOneBy({ email });
+
+      if (existingUser) {
+        return res
+          .status(400)
+          .json({ message: "A user with that email already exists." });
+      }
+      
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: "Internal server error" });
+      res.status(500).send({ message: "Internal server error." });
     }
   }
 }

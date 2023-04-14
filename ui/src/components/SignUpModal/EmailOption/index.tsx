@@ -1,5 +1,9 @@
 import { API_CLIENT as apiClient } from "lib/axios/apiClient";
-import { BTN_CLASSNAMES, MAIN_BRAND_COLOR } from "lib/constants";
+import {
+  BTN_CLASSNAMES,
+  MAIN_BRAND_COLOR,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "lib/constants";
 import { validateEmail } from "lib/helpers";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "react-feather";
@@ -24,6 +28,7 @@ enum Input {
 
 const EmailSignUpOption: FC<ISelectedComponentProps> = ({
   setSelectedOption,
+  setError,
 }) => {
   const [input, setInput] = useState<IInput>({ email: "", password: "" });
   const [focusedInput, setFocusedInput] = useState<Input>();
@@ -41,8 +46,8 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
 
   const handleSubmit = () => {
     apiClient.post("/users", input).catch(({ message }) => {
-      message = message ?? "Unexpected error";
-      
+      message = message ?? UNEXPECTED_ERROR_MESSAGE;
+      setError(message);
     });
   };
 

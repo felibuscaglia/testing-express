@@ -14,6 +14,7 @@ export interface IModalProps {
 
 export interface ISelectedComponentProps {
   setSelectedOption: (option: SIGN_UP_OPTION) => void;
+  setError: (message: string) => void;
 }
 
 export const SELECTED_OPTION_COMPONENT = {

@@ -1,9 +1,15 @@
 import { FC, Fragment, useState } from "react";
 import { X } from "react-feather";
-import { IModalProps, SIGN_UP_OPTION, SELECTED_OPTION_COMPONENT } from "./interfaces";
+import ErrorMessage from "./ErrorMessage";
+import {
+  IModalProps,
+  SIGN_UP_OPTION,
+  SELECTED_OPTION_COMPONENT,
+} from "./interfaces";
 
 const Modal: FC<IModalProps> = ({ closeModal }) => {
   const [selectedOption, setSelectedOption] = useState(SIGN_UP_OPTION.NONE);
+  const [error, setError] = useState<string | null>(null);
 
   const SelectedComponent = SELECTED_OPTION_COMPONENT[selectedOption];
 
@@ -17,7 +23,13 @@ const Modal: FC<IModalProps> = ({ closeModal }) => {
             strokeWidth={1}
           />
         </button>
-        {<SelectedComponent setSelectedOption={setSelectedOption} />}
+        {error && <ErrorMessage message={error} />}
+        {
+          <SelectedComponent
+            setSelectedOption={setSelectedOption}
+            setError={setError}
+          />
+        }
       </div>
       <div className="h-screen w-screen bg-white opacity-40 absolute top-0 flex items-center justify-center z-0"></div>
     </Fragment>
