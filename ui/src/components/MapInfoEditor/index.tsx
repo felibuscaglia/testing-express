@@ -6,9 +6,11 @@ const MapInfoEditor = () => {
   return (
     <div className="bg-white w-1/5 absolute mt-7 left-10 z-10 flex flex-col">
       <div className="flex items-center justify-between p-4">
-        <h2 className="font-title font-bold text-main-brand-color">
-          Lugares que hay que visitar
-        </h2>
+        <button>
+          <h2 className="font-title font-bold text-main-brand-color">
+            Lugares que hay que visitar
+          </h2>
+        </button>
         <button>
           <MoreVertical size={21} color="#7F7F7F" />
         </button>

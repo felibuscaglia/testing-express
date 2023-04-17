@@ -9,10 +9,6 @@ export enum SIGN_UP_OPTION {
   GOOGLE = "Google",
 }
 
-export interface IModalProps {
-  closeModal: () => void;
-}
-
 export interface ISelectedComponentProps {
   setSelectedOption: (option: SIGN_UP_OPTION) => void;
   setError: (apiError: IAPIError | null) => void;

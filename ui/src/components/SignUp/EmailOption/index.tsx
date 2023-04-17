@@ -5,7 +5,7 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "lib/constants";
 import { validateEmail } from "lib/helpers";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, FormEvent, useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "react-feather";
 import { ISelectedComponentProps, SIGN_UP_OPTION } from "../interfaces";
 import PasswordValidator from "./PasswordValidator";
@@ -46,7 +46,8 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     setError(null); // Setting error as null in case there was an error setted.
 
@@ -99,7 +100,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
   const isInputValid = isEmailValid && isPasswordValid;
 
   return (
-    <section className="py-11 px-14 flex flex-col items-center">
+    <form className="py-11 px-14 flex flex-col items-center" onSubmit={e => handleSubmit(e)}>
       <h2 className="text-3xl mb-16">Sign up with your email</h2>
       {Object.entries(input).map(([key, value]) => (
         <div className={INPUT_CONTAINER_CLASSNAMES} key={`input-${key}`}>
@@ -127,7 +128,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           " mt-4 w-3/5 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-white disabled:border-gray-300 flex items-center justify-center"
         }
         disabled={!isInputValid || loading}
-        onClick={handleSubmit}
+        type="submit"
       >
         {!loading && "Continue"}
         <ClipLoader
@@ -147,7 +148,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           All sign up options
         </span>
       </button>
-    </section>
+    </form>
   );
 };
 

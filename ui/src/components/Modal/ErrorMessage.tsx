@@ -11,7 +11,9 @@ const ErrorMessage: FC<IAPIError> = ({ message, errors }) => {
         <ul>
           {errors.map((err) => (
             <li>
-              <p className="font-title">- {err.charAt(0).toUpperCase() + err.slice(1)}</p>
+              <p className="font-title">
+                - {err.charAt(0).toUpperCase() + err.slice(1)}
+              </p>
             </li>
           ))}
         </ul>
