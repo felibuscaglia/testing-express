@@ -12,7 +12,7 @@ body {
   margin: 0;
 }
 
-input {
+input, textarea {
   outline: none;
   font-family: var(--text-font-family);
   color: var(--brand-color);
@@ -27,7 +27,7 @@ span, p, label {
   font-family: var(--text-font-family);
 }
 
-h2, h3 {
+h2, h3, h5 {
   font-family: var(--title-font-family);
   color: var(--brand-color);
 }

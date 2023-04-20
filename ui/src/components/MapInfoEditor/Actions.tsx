@@ -25,7 +25,7 @@ const Actions = () => {
     <div className="bg-main-brand-color px-4 py-2 text-white mt-4">
       <div className="flex items-center justify-between">
         {ACTIONS.map(({ text, icon: Icon }) => (
-          <button className={BTN_CLASSNAME}>
+          <button className={BTN_CLASSNAME} key={`action-button-${text}`}>
             <Icon {...ICON_PROPS} />
             <span>{text}</span>
           </button>

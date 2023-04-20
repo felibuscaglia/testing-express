@@ -11,8 +11,6 @@ const SignUp = ({}) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(SIGN_UP_OPTION.NONE);
 
-  const SelectedComponent = SELECTED_OPTION_COMPONENT[selectedOption];
-
   return (
     <Fragment>
       <button className={BTN_CLASSNAMES} onClick={() => setDisplayModal(true)}>
@@ -20,8 +18,8 @@ const SignUp = ({}) => {
       </button>
       {displayModal && (
         <Modal<Omit<ISelectedComponentProps, "setError">>
-          closeModal={() => setDisplayModal(false)}
-          component={SelectedComponent}
+          setDisplayModal={setDisplayModal}
+          component={SELECTED_OPTION_COMPONENT[selectedOption]}
           componentProps={{ setSelectedOption }}
         />
       )}
