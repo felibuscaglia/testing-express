@@ -52,8 +52,8 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     setError(null); // Setting error as null in case there was an error setted.
 
     apiClient
-      .post("/users", input)
-      .then(({ data }) => {
+      .post("/auth/signup", input)
+      .then(() => {
         window.location.href = '/user'
       })
       .catch((error) => {

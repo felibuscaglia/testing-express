@@ -7,16 +7,17 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { BaseController } from "./base.controller";
 
-class UserController extends BaseController {
+class AuthController extends BaseController {
   constructor() {
-    super('/users');
+    super("/auth");
   }
 
   public initializeRoutes() {
     this.router.post(
-      "/",
+      "/signup",
       async (req: SignUpRequest, res: Response) => await this.signUp(req, res)
     );
+    this.router.get('/check', (req, res: Response) => this.checkAuth(res))
     // this.router.use(this.validateInput);
     // Controller endpoints
     // this.router.post(this.path + "/login", this.login);
@@ -78,6 +79,10 @@ class UserController extends BaseController {
     const createUserDTO = new CreateUserDTO(email, password);
     return validate(createUserDTO);
   }
+
+  private checkAuth(res: Response) {
+    return res.status(200).send();
+  }
 }
 
-export default UserController;
+export default AuthController;
