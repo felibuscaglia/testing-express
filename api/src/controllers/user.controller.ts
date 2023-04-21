@@ -5,13 +5,11 @@ import { SignUpRequest } from "types/UserDto.type";
 import { validate } from "class-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { BaseController } from "./base.controller";
 
-class UserController {
-  public readonly path = "/users";
-  public readonly router: Router = Router();
-
+class UserController extends BaseController {
   constructor() {
-    this.initializeRoutes();
+    super('/users');
   }
 
   public initializeRoutes() {

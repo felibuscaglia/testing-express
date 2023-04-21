@@ -50,7 +50,7 @@ class App {
     this.app.use(morgan("dev"));
     this.app.use(corsMiddleware([process.env.UI_URL]));
     this.app.use(apiKeyMiddleware);
-    this.app.use(authMiddleware);
+    this.app.use(authMiddleware);// TODO: Exceptions
   }
 
   private initializeControllers(controllers: any[]) {

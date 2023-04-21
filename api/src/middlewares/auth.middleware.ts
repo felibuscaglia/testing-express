@@ -1,13 +1,14 @@
 import { User } from "../entities";
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { RequestWithUser } from "types/UserDto.type";
 
 interface DecodedToken extends JwtPayload {
   email: string;
 }
 
 const authMiddleware = async (
-  req: Request & { user?: User },
+  req: RequestWithUser,
   res: Response,
   next: NextFunction
 ) => {
@@ -18,7 +19,10 @@ const authMiddleware = async (
   }
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as DecodedToken;
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    ) as DecodedToken;
 
     const user = await User.findOneBy({
       email: decodedToken.email,

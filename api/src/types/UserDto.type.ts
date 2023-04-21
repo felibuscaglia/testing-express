@@ -1,3 +1,4 @@
+import { User } from "../entities";
 import { Request } from "express";
 
 export type UserDTO = {
@@ -6,3 +7,4 @@ export type UserDTO = {
 };
 
 export type SignUpRequest = Request<{}, {}, UserDTO>;
+export type RequestWithUser = Request & { user: User };
