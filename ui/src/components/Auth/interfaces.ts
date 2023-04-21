@@ -2,6 +2,11 @@ import { IAPIError } from "lib/interfaces";
 import EmailSignUpOption from "./EmailOption";
 import SplashSignUpModal from "./SplashOption";
 
+export enum AUTH_OPTION {
+  SIGN_IN,
+  SIGN_UP,
+}
+
 export enum SIGN_UP_OPTION {
   NONE = "",
   EMAIL = "email",

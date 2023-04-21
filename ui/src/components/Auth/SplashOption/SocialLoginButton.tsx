@@ -1,17 +1,17 @@
 import { FC, FunctionComponent, SVGProps } from "react";
 
 interface ISocialLoginButtonProps {
-  option: string;
   icon: FunctionComponent<SVGProps<SVGSVGElement>>;
   iconClassnames?: string;
   onClick: () => void;
+  label: string;
 }
 
 const SocialLoginButton: FC<ISocialLoginButtonProps> = ({
-  option,
   icon: Icon,
   iconClassnames = "",
   onClick,
+  label,
 }) => {
   return (
     <button
@@ -19,7 +19,7 @@ const SocialLoginButton: FC<ISocialLoginButtonProps> = ({
       onClick={onClick}
     >
       <Icon className={"h-5 w-5 " + iconClassnames} />
-      <span className="text-sm">Sign up with {option}</span>
+      <span className="text-sm">{label}</span>
     </button>
   );
 };

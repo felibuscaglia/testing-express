@@ -22,6 +22,8 @@ export const BTN_CLASSNAMES =
 export const SECONDARY_BTN_CLASSNAMES =
   "text-sm bg-transparent border border-main-brand-color py-2 px-4 text-main-brand-color hover:bg-main-brand-color hover:text-white";
 
+export const SMALL_TEXT_CLASSNAMES = "text-sm text-gray-400 text-center";
+
 // Regex
 export const EMAIL_REGEX = /\S+@\S+\.\S+/;
 

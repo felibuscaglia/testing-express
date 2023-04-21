@@ -1,6 +1,7 @@
-import { Request, Response, Router } from "express";
+import { Response } from "express";
 import { BaseController } from "./base.controller";
 import { RequestWithUser } from "types/UserDto.type";
+import authMiddleware from "../middlewares/auth.middleware";
 
 class MapController extends BaseController {
   constructor() {
@@ -13,6 +14,7 @@ class MapController extends BaseController {
       async (req: RequestWithUser, res: Response) =>
         await this.createMap(req, res)
     );
+    this.router.use(authMiddleware);
   }
 
   private async createMap(req: RequestWithUser, res: Response) {

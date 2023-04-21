@@ -1,9 +1,9 @@
-import SignUp from "components/Auth";
+import Auth from "components/Auth";
 
 const SplashScreen = () => {
   return (
     <main>
-      <SignUp />
+      <Auth />
     </main>
   );
 };

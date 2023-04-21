@@ -6,5 +6,11 @@ export type UserDTO = {
   password: string;
 };
 
+export type SignInDTO = {
+  email: string;
+  password: string;
+};
+
 export type SignUpRequest = Request<{}, {}, UserDTO>;
+export type SignInRequest = Request<{}, {}, SignInDTO>;
 export type RequestWithUser = Request & { user: User };

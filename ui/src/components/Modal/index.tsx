@@ -9,6 +9,8 @@ import {
 import { X } from "react-feather";
 import ErrorMessage from "./ErrorMessage";
 
+// TODO: Close button should receive an onClose function, whicnh in the Auth case should reset the option to NONE
+
 interface IModalProps<T> {
   setDisplayModal: Dispatch<SetStateAction<boolean>>;
   component: ElementType;

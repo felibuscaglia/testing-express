@@ -5,12 +5,14 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "lib/constants";
 import { validateEmail } from "lib/helpers";
-import { FC, FormEvent, useEffect, useMemo, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "react-feather";
 import { ISelectedComponentProps, SIGN_UP_OPTION } from "../interfaces";
 import PasswordValidator from "./PasswordValidator";
 import { PASSWORD_VALIDATIONS } from "./validators";
 import ClipLoader from "react-spinners/ClipLoader";
+import { AUTH_CONTEXT as AuthContext } from "contexts/AuthContext";
+import { API_PATHS } from "lib/enums";
 
 const LABEL_CLASSNAMES = "text-sm text-main-brand-color capitalize";
 const INPUT_CLASSNAMES =
@@ -39,6 +41,8 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     [Input.PASSWORD]: false,
   });
 
+  const { signText, isSignIn } = useContext(AuthContext);
+
   const handleInputChange = (key: string, value: string) => {
     setInput({
       ...input,
@@ -52,9 +56,9 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     setError(null); // Setting error as null in case there was an error setted.
 
     apiClient
-      .post("/auth/signup", input)
+      .post(isSignIn ? API_PATHS.SIGN_IN : API_PATHS.SIGN_UP, input)
       .then(() => {
-        window.location.href = '/user'
+        window.location.href = "/user";
       })
       .catch((error) => {
         let errorMessage = UNEXPECTED_ERROR_MESSAGE;
@@ -77,10 +81,17 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
   const isEmailValid = useMemo(() => validateEmail(input.email), [input.email]);
 
   const isPasswordValid = useMemo(() => {
-    const passwordValidations = PASSWORD_VALIDATIONS.map(({ validator }) =>
-      validator(input.password)
-    );
-    return passwordValidations.every((isValid) => isValid);
+    let isValid = false;
+    if (isSignIn) {
+      isValid = PASSWORD_VALIDATIONS[0].validator(input.password);
+    } else {
+      const passwordValidations = PASSWORD_VALIDATIONS.slice().map(
+        ({ validator }) => validator(input.password)
+      );
+      isValid = passwordValidations.every((isValid) => isValid);
+    }
+
+    return isValid;
   }, [input.password]);
 
   useEffect(() => {
@@ -98,10 +109,14 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
   }, [isPasswordValid]);
 
   const isInputValid = isEmailValid && isPasswordValid;
+  const displayPasswordValidator = !isSignIn && focusedInput === Input.PASSWORD;
 
   return (
-    <form className="py-11 px-14 flex flex-col items-center" onSubmit={e => handleSubmit(e)}>
-      <h2 className="text-3xl mb-16">Sign up with your email</h2>
+    <form
+      className="py-11 px-14 flex flex-col items-center"
+      onSubmit={(e) => handleSubmit(e)}
+    >
+      <h2 className="text-3xl mb-16">{signText} with your email</h2>
       {Object.entries(input).map(([key, value]) => (
         <div className={INPUT_CONTAINER_CLASSNAMES} key={`input-${key}`}>
           <label htmlFor={key} className={LABEL_CLASSNAMES}>
@@ -119,7 +134,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           />
         </div>
       ))}
-      {focusedInput === Input.PASSWORD && (
+      {displayPasswordValidator && (
         <PasswordValidator password={input.password} />
       )}
       <button
@@ -145,7 +160,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
       >
         <ChevronLeft color={MAIN_BRAND_COLOR} size={20} strokeWidth={1} />
         <span className="text-main-brand-color text-sm">
-          All sign up options
+          All {signText.toLowerCase()} options
         </span>
       </button>
     </form>

@@ -8,7 +8,6 @@ import morgan from "morgan";
 import apiKeyMiddleware from "./middlewares/apiKey.middleware";
 import corsMiddleware from "./middlewares/cors.middleware";
 import entities from './entities';
-import authMiddleware from "./middlewares/auth.middleware";
 
 dotenv.config();
 class App {
@@ -50,7 +49,6 @@ class App {
     this.app.use(morgan("dev"));
     this.app.use(corsMiddleware([process.env.UI_URL]));
     this.app.use(apiKeyMiddleware);
-    this.app.use(authMiddleware);// TODO: Exceptions
   }
 
   private initializeControllers(controllers: any[]) {
