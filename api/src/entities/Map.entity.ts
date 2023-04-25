@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./User.entity";
+import { DEFAULT_MAP_NAME } from "../lib/constants";
 
 @Entity()
 export class Map extends BaseEntity {
@@ -14,7 +15,7 @@ export class Map extends BaseEntity {
   })
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: DEFAULT_MAP_NAME })
   name: string;
 
   @Column("text", { nullable: true })

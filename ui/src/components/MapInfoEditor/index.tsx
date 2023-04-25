@@ -43,7 +43,7 @@ const MapInfoEditor = () => {
         </button>
       </div>
       {displayModal && (
-        <Modal<any> // TODO: CHANGE
+        <Modal<{}>
           setDisplayModal={setDisplayModal}
           component={
             SELECTED_MAP_INFO_EDITOR_COMPONENTS[

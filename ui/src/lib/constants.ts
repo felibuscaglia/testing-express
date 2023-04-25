@@ -12,6 +12,7 @@ export const MAPBOX_API_PATHS = {
 };
 
 export const MAIN_BRAND_COLOR = "#2A2A2A";
+export const TEXT_FONT_FAMILY = "Questrial";
 
 export const APP_NAME = "AltasCraft";
 
@@ -20,7 +21,7 @@ export const BTN_CLASSNAMES =
   "text-sm bg-main-brand-color border border-main-brand-color py-2 px-4 text-white hover:bg-transparent hover:text-main-brand-color";
 
 export const SECONDARY_BTN_CLASSNAMES =
-  "text-sm bg-transparent border border-main-brand-color py-2 px-4 text-main-brand-color hover:bg-main-brand-color hover:text-white";
+  "text-sm bg-transparent border border-secondary-brand-color py-2 px-4 text-main-brand-color hover:bg-secondary-brand-color";
 
 export const SMALL_TEXT_CLASSNAMES = "text-sm text-gray-400 text-center";
 

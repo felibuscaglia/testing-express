@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         "main-brand-color": "#2a2a2a",
+        "secondary-brand-color": "#E5E5E5",
       },
       fontFamily: {
         text: ["Questrial"],

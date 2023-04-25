@@ -10,12 +10,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { BaseController } from "./base.controller";
 import authMiddleware from "../middlewares/auth.middleware";
+import { DataSource } from "typeorm";
 
 // TODO: Use the AuthGuard only on some routes
 
 class AuthController extends BaseController {
-  constructor() {
-    super("/auth");
+  constructor(dataSource: DataSource) {
+    super("/auth", dataSource);
   }
 
   public initializeRoutes() {

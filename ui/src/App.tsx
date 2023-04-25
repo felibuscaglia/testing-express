@@ -11,7 +11,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<UnAuthGuard component={SplashScreen} />} />
         <Route path="/maps" element={<AuthGuard component={HomeScreen} />} />
-        <Route path="/edit" element={<MapEditor />} />
+        <Route
+          path="/edit/:mapId"
+          element={<AuthGuard component={MapEditor} />}
+        />
       </Routes>
     </Router>
   );

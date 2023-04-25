@@ -58,7 +58,7 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
     apiClient
       .post(isSignIn ? API_PATHS.SIGN_IN : API_PATHS.SIGN_UP, input)
       .then(() => {
-        window.location.href = "/user";
+        window.location.href = "/maps";
       })
       .catch((error) => {
         let errorMessage = UNEXPECTED_ERROR_MESSAGE;

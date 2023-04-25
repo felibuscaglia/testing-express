@@ -7,7 +7,9 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import apiKeyMiddleware from "./middlewares/apiKey.middleware";
 import corsMiddleware from "./middlewares/cors.middleware";
-import entities from './entities';
+import entities from "./entities";
+import AuthController from "./controllers/auth.controller";
+import MapController from "./controllers/map.controller";
 
 dotenv.config();
 class App {
@@ -15,12 +17,12 @@ class App {
   public port: number;
   public connection: DataSource;
 
-  constructor(controllers: any[], port: number) {
+  constructor(port: number) {
     this.app = express();
     this.port = port;
     this.initializeModels();
     this.initializeMiddlewares();
-    this.initializeControllers(controllers);
+    this.initializeControllers();
   }
 
   private async initializeModels() {
@@ -51,9 +53,11 @@ class App {
     this.app.use(apiKeyMiddleware);
   }
 
-  private initializeControllers(controllers: any[]) {
-    controllers.forEach((controller) => {
-      this.app.use(controller.path, controller.router);
+  private initializeControllers() {
+    const controllers = [AuthController, MapController];
+    controllers.forEach((Controller) => {
+      const controllerInstace = new Controller(this.connection);
+      this.app.use(controllerInstace.path, controllerInstace.router);
     });
   }
 

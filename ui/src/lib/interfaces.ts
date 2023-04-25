@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export interface ICoordinates {
   lng: number;
   lat: number;
@@ -13,4 +11,15 @@ export interface IAPIError {
 
 export interface IGuardProps {
   component: () => JSX.Element;
+}
+
+// TODO: Maybe unify all API routes?
+export interface ICreateMapResponse {
+  mapId: string;
+}
+
+export interface IMap {
+  id: string;
+  name: string;
+  description?: string;
 }

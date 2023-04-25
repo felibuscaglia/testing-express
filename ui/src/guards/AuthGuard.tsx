@@ -1,5 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { API_CLIENT as apiClient } from "lib/axios/apiClient";
+import { API_PATHS } from "lib/enums";
 import { IGuardProps } from "lib/interfaces";
 import { useEffect, FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ const AuthGuard: FC<IGuardProps> = ({ component: Component }) => {
     const checkAuth = async () => {
       try {
         const res = await apiClient.get<{ isAuthenticated: boolean }>(
-          "/auth/check"
+          API_PATHS.CHECK_AUTH
         );
 
         if (res.status !== HttpStatusCode.Ok) {
