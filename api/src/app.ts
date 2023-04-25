@@ -20,12 +20,11 @@ class App {
   constructor(port: number) {
     this.app = express();
     this.port = port;
-    this.initializeModels();
+    this.initializeModelsAndControllers();
     this.initializeMiddlewares();
-    this.initializeControllers();
   }
 
-  private async initializeModels() {
+  private async initializeModelsAndControllers() {
     const ormConfig = dataSource(
       process.env.DB_HOST,
       process.env.DB_PORT,
@@ -42,6 +41,7 @@ class App {
     }
     await connection.initialize();
     this.connection = connection;
+    this.initializeControllers(); // Initializing controllers here bc it's async
   }
 
   private initializeMiddlewares() {
@@ -57,7 +57,7 @@ class App {
     const controllers = [AuthController, MapController];
     controllers.forEach((Controller) => {
       const controllerInstace = new Controller(this.connection);
-      this.app.use(controllerInstace.path, controllerInstace.router);
+      this.app.use(controllerInstace.getPath(), controllerInstace.getRouter());
     });
   }
 

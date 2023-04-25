@@ -1,17 +1,20 @@
 import Modal from "components/Modal";
 import { SELECTED_MAP_INFO_EDITOR_COMPONENTS } from "lib/constants";
 import { MAP_INFO_EDITORS } from "lib/enums";
-import { Fragment, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
+import { IMap, IMapInfoEditorComponentProps } from "lib/interfaces";
 
-const MapInfoEditor = () => {
+interface IMapInfoEditorProps {
+  map: IMap;
+}
+
+const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map }) => {
   const [displayModal, setDisplayModal] = useState(false);
-  const [
-    selectedMapInfoEditor,
-    setSelectedMapInfoEditor,
-  ] = useState<MAP_INFO_EDITORS | null>(null);
+  const [selectedMapInfoEditor, setSelectedMapInfoEditor] =
+    useState<MAP_INFO_EDITORS | null>(null);
 
   const handleOpenModal = (mapInfoEditor: MAP_INFO_EDITORS) => {
     setDisplayModal(true);
@@ -24,7 +27,7 @@ const MapInfoEditor = () => {
         <div className="flex items-center justify-between p-4">
           <button onClick={() => handleOpenModal(MAP_INFO_EDITORS.TITLE)}>
             <h2 className="font-title font-bold text-main-brand-color">
-              Lugares que hay que visitar
+              {map.name}
             </h2>
           </button>
           <button>
@@ -43,14 +46,18 @@ const MapInfoEditor = () => {
         </button>
       </div>
       {displayModal && (
-        <Modal<{}>
+        <Modal<IMapInfoEditorComponentProps>
           setDisplayModal={setDisplayModal}
           component={
             SELECTED_MAP_INFO_EDITOR_COMPONENTS[
               selectedMapInfoEditor ?? MAP_INFO_EDITORS.TITLE
             ]
           }
-          componentProps={{}}
+          componentProps={{
+            name: map.name,
+            description: map.description,
+            setDisplayModal,
+          }}
         />
       )}
     </Fragment>

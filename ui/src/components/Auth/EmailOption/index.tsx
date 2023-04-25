@@ -2,6 +2,7 @@ import { API_CLIENT as apiClient } from "lib/axios/apiClient";
 import {
   BTN_CLASSNAMES,
   MAIN_BRAND_COLOR,
+  SMALL_TEXT_CLASSNAMES,
   UNEXPECTED_ERROR_MESSAGE,
 } from "lib/constants";
 import { validateEmail } from "lib/helpers";
@@ -154,6 +155,12 @@ const EmailSignUpOption: FC<ISelectedComponentProps> = ({
           data-testid="loader"
         />
       </button>
+      {isSignIn && (
+        <p className={SMALL_TEXT_CLASSNAMES + " mt-8"}>
+          You have trouble signing in?{" "}
+          <button className="underline">Reset your password.</button>
+        </p>
+      )}
       <button
         className="flex items-center mt-8"
         onClick={() => setSelectedOption(SIGN_UP_OPTION.NONE)}

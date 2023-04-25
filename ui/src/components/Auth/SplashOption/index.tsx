@@ -50,12 +50,6 @@ const SplashSignUpModal: FC<ISelectedComponentProps> = ({
           {isSignIn ? "Sign up" : "Sign in"}
         </a>
       </span>
-      {isSignIn && (
-        <p className={SMALL_TEXT_CLASSNAMES + " mb-8"}>
-          You have trouble signing in?{" "}
-          <button className="underline">Reset your password.</button>
-        </p>
-      )}
       <p className={SMALL_TEXT_CLASSNAMES}>
         Click “{signText}” to agree to {APP_NAME}'s{" "}
         <Link to="/terms-of-service" className="underline">

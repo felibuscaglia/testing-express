@@ -23,3 +23,9 @@ export interface IMap {
   name: string;
   description?: string;
 }
+
+export interface IMapInfoEditorComponentProps {
+  name: string;
+  description?: string;
+  setDisplayModal: (display: boolean) => void;
+}

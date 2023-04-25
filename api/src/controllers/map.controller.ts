@@ -5,9 +5,9 @@ import authMiddleware from "../middlewares/auth.middleware";
 import { Map } from "../entities";
 import { DataSource } from "typeorm";
 
-class MapController extends BaseController {
+class MapController extends BaseController<Map> {
   constructor(dataSource: DataSource) {
-    super("/maps", dataSource);
+    super("/maps", dataSource, dataSource.getRepository(Map));
   }
 
   protected initializeRoutes(): void {
@@ -18,7 +18,7 @@ class MapController extends BaseController {
         await this.createMap(req, res)
     );
     this.router.get(
-      "/",
+      "/:mapId",
       async (req: RequestWithUser, res: Response) => await this.getMap(req, res)
     );
   }
@@ -28,7 +28,7 @@ class MapController extends BaseController {
       const map = new Map();
       map.user = req.user;
 
-      await map.save();
+      await this.repository.save(map);
 
       return res.status(201).send({
         mapId: map.id,
@@ -41,10 +41,28 @@ class MapController extends BaseController {
 
   private async getMap(req: RequestWithUser, res: Response) {
     try {
-      const { mapId = "" } = req.query;
+      const { mapId = "" } = req.params;
 
-      
-    } catch (err) {}
+      console.log(req.user.id);
+
+      const map = await this.repository.findOne({
+        where: {
+          id: mapId,
+          user: {
+            id: req.user.id,
+          },
+        },
+      });
+
+      if (!map) {
+        return res.status(404).json({ message: "Map not found." });
+      }
+
+      return res.json(map);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Unable to get map." });
+    }
   }
 }
 

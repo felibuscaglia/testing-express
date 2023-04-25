@@ -1,18 +1,28 @@
 import { Router } from "express";
-import { DataSource } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 
-export abstract class BaseController {
-  public readonly path: string;
-  public readonly router: Router;
-  public readonly dataSource: DataSource;
+export abstract class BaseController<T> {
+  private readonly path: string;
+  protected readonly router: Router;
+  protected readonly dataSource: DataSource;
+  protected readonly repository: Repository<T>;
 
-  constructor(path: string, dataSource: DataSource) {
+  constructor(path: string, dataSource: DataSource, repository: Repository<T>) {
     this.path = path;
     this.router = Router();
     this.dataSource = dataSource;
+    this.repository = repository;
 
     this.initializeRoutes();
   }
 
   protected abstract initializeRoutes(): void;
+
+  public getRouter() {
+    return this.router;
+  }
+
+  public getPath() {
+    return this.path;
+  }
 }

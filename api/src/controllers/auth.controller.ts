@@ -1,10 +1,7 @@
 import { CreateUserDTO } from "../dto/CreateUser.dto";
 import { User } from "../entities";
 import { Response } from "express";
-import {
-  SignInRequest,
-  SignUpRequest,
-} from "types/UserDto.type";
+import { SignInRequest, SignUpRequest } from "types/UserDto.type";
 import { validate } from "class-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -12,11 +9,9 @@ import { BaseController } from "./base.controller";
 import authMiddleware from "../middlewares/auth.middleware";
 import { DataSource } from "typeorm";
 
-// TODO: Use the AuthGuard only on some routes
-
-class AuthController extends BaseController {
+class AuthController extends BaseController<User> {
   constructor(dataSource: DataSource) {
-    super("/auth", dataSource);
+    super("/auth", dataSource, dataSource.getRepository(User));
   }
 
   public initializeRoutes() {
@@ -45,7 +40,7 @@ class AuthController extends BaseController {
     try {
       const { email, password } = req.body;
 
-      const user = await User.findOneBy({ email });
+      const user = await this.repository.findOneBy({ email });
 
       if (!user) {
         return res.status(401).send({ message: "Invalid email or password." });
@@ -99,7 +94,7 @@ class AuthController extends BaseController {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         user.password = hashedPassword;
-        await user.save();
+        await this.repository.save(user);
 
         const token = jwt.sign({ email }, process.env.JWT_SECRET, {
           expiresIn: "7 days",
