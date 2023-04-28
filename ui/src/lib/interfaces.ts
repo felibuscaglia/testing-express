@@ -22,6 +22,7 @@ export interface IMap {
   id: string;
   name: string;
   description?: string;
+  updatedAt: string;
 }
 
 export interface IMapInfoEditorComponentProps {

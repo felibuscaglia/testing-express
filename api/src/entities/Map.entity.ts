@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User.entity";
 import { DEFAULT_MAP_NAME } from "../lib/constants";
@@ -23,4 +24,7 @@ export class Map extends BaseEntity {
 
   @ManyToOne((type) => User, (user) => user.maps)
   user: User;
+
+  @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
+  updatedAt: Date;
 }

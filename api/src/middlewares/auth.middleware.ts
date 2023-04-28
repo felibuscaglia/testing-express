@@ -24,8 +24,13 @@ const authMiddleware = async (
       process.env.JWT_SECRET
     ) as DecodedToken;
 
-    const user = await User.findOneBy({
-      email: decodedToken.email,
+    const user = await User.findOne({
+      where: {
+        email: decodedToken.email,
+      },
+      select: {
+        email: true,
+      },
     });
 
     if (!user) {

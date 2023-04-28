@@ -6,6 +6,7 @@ import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
 import { IMap, IMapInfoEditorComponentProps } from "lib/interfaces";
+import { calculateTimeDiff } from "lib/helpers";
 
 interface IMapInfoEditorProps {
   map: IMap;
@@ -15,6 +16,7 @@ const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map }) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [selectedMapInfoEditor, setSelectedMapInfoEditor] =
     useState<MAP_INFO_EDITORS | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<Date>(new Date(map.updatedAt));
 
   const handleOpenModal = (mapInfoEditor: MAP_INFO_EDITORS) => {
     setDisplayModal(true);
@@ -36,7 +38,11 @@ const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map }) => {
         </div>
         <div className="text-xs flex flex-col gap-y-1 text-[#777777] px-4">
           <span>4 views</span>
-          <span>Last change was made 2 days ago</span>
+          <span>
+            Last change was made
+            {" " + calculateTimeDiff(updatedAt) + " "}
+            ago
+          </span>
         </div>
         <Actions />
         <Layer />
