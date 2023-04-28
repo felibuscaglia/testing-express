@@ -1,12 +1,13 @@
+import { IMapLayer } from "lib/interfaces";
 import { MoreVertical, Upload } from "react-feather";
 
-const Layer = () => {
+const Layer = ({ name }: IMapLayer) => {
   return (
     <div className="border-b border-main-brand-color px-4 py-3 min-h-[8rem]">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1">
           <input type="checkbox" id="displayLayer" />
-          <label className="font-title text-sm font-bold" htmlFor="displayLayer">Unnamed layer</label>
+          <label className="font-title text-sm font-bold" htmlFor="displayLayer">{name}</label>
         </div>
         <MoreVertical size={21} color="#7F7F7F" />
       </div>

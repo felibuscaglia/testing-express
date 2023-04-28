@@ -1,22 +1,32 @@
 import Modal from "components/Modal";
-import { SELECTED_MAP_INFO_EDITOR_COMPONENTS } from "lib/constants";
-import { MAP_INFO_EDITORS } from "lib/enums";
-import { Fragment, useContext, useEffect, useState } from "react";
+import {
+  SELECTED_MAP_INFO_EDITOR_COMPONENTS,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "lib/constants";
+import { API_PATHS, MAP_INFO_EDITORS } from "lib/enums";
+import { FC, Fragment, useContext, useEffect, useState } from "react";
 import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
-import { IMapInfoEditorComponentProps } from "lib/interfaces";
-import { SELECTED_MAP_CONTEXT } from "contexts/SelectedMapContext";
+import { IMap, IMapInfoEditorComponentProps, IMapInput } from "lib/interfaces";
 import SavingIndicator from "./SavingIndicator";
+import { API_CLIENT as apiClient } from "lib/axios/apiClient";
+import { showToastWithErrorMessage } from "lib/helpers";
+import { Toaster } from "react-hot-toast";
 
 // TODO: Trunc description
 
-const MapInfoEditor = () => {
-  const { map } = useContext(SELECTED_MAP_CONTEXT);
+interface IMapInfoEditorProps {
+  map: IMap;
+  setMap: (map: IMap) => void;
+}
+
+const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map, setMap }) => {
   const [displayModal, setDisplayModal] = useState(false);
   const [selectedMapInfoEditor, setSelectedMapInfoEditor] =
     useState<MAP_INFO_EDITORS | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date>(new Date(map.updatedAt));
+  const [mapLayers, setMapLayers] = useState(map.layers);
   const [loadingChanges, setLoadingChanges] = useState<boolean | null>(null);
 
   const handleOpenModal = (mapInfoEditor: MAP_INFO_EDITORS) => {
@@ -45,6 +55,34 @@ const MapInfoEditor = () => {
     return () => clearInterval(intervalId);
   }, [updatedAt]);
 
+  const patchMap = (input: IMapInput) => {
+    setLoadingChanges(true);
+    setMap({
+      ...map,
+      name: input.name,
+      description: input.description,
+    });
+    setDisplayModal(false);
+
+    apiClient
+      .patch(`${API_PATHS.GET_MAP}/${map.id}`, input)
+      .then((res) => {
+        setLoadingChanges(false);
+        setUpdatedAt(new Date());
+      })
+      .catch((err) => {
+        let errorMessage = UNEXPECTED_ERROR_MESSAGE;
+
+        if (err.response) {
+          const { data } = err.response;
+          errorMessage = data.message;
+        }
+
+        showToastWithErrorMessage(errorMessage);
+        setLoadingChanges(false);
+      }); // TODO: Handle error in the LoadingIndicator component.
+  };
+
   return (
     <Fragment>
       <div className="bg-white w-1/5 absolute mt-7 left-10 z-10 flex flex-col">
@@ -65,14 +103,15 @@ const MapInfoEditor = () => {
           </button>
         </div>
         <div className="text-xs flex flex-col gap-y-1 text-gray-400 px-4">
-          <span>4 views</span>
           <SavingIndicator
             updatedAt={updatedAt}
             loadingChanges={loadingChanges}
           />
         </div>
         <Actions />
-        <Layer />
+        {mapLayers?.map(layer => (
+          <Layer {...layer} />
+        ))}
         <button className="px-4 py-1.5 flex items-center text-xs bg-main-brand-color text-white font-text border-x border-b border-main-brand-color hover:bg-transparent hover:text-main-brand-color gap-1">
           <PenTool size={14} />
           <span>Change map style</span>
@@ -88,11 +127,12 @@ const MapInfoEditor = () => {
           }
           componentProps={{
             setDisplayModal,
-            setUpdatedAt,
-            setLoadingChanges
+            patchMap,
+            map,
           }}
         />
       )}
+      <Toaster />
     </Fragment>
   );
 };

@@ -2,12 +2,15 @@ import { Response } from "express";
 import { BaseController } from "./base.controller";
 import { RequestWithUser } from "types/UserDto.type";
 import authMiddleware from "../middlewares/auth.middleware";
-import { Map } from "../entities";
-import { DataSource } from "typeorm";
+import { Layer, Map } from "../entities";
+import { DataSource, Repository } from "typeorm";
 
 class MapController extends BaseController<Map> {
+  private readonly layerRepository: Repository<Layer>;
+
   constructor(dataSource: DataSource) {
     super("/maps", dataSource, dataSource.getRepository(Map));
+    this.layerRepository = dataSource.getRepository(Layer);
   }
 
   protected initializeRoutes(): void {
@@ -31,9 +34,13 @@ class MapController extends BaseController<Map> {
   private async createMap(req: RequestWithUser, res: Response) {
     try {
       const map = new Map();
+      const baseLayer = new Layer();
+
       map.user = req.user;
+      baseLayer.map = map;
 
       await this.repository.save(map);
+      await this.layerRepository.save(baseLayer);
 
       return res.status(201).send({
         mapId: map.id,
@@ -48,7 +55,7 @@ class MapController extends BaseController<Map> {
     try {
       const { mapId = "" } = req.params;
 
-      const map = await this.findMapById(mapId, req.user.id);
+      const map = await this.findMapById(mapId, req.user.id, true);
 
       if (!map) {
         return res.status(404).json({ message: "Map not found." });
@@ -66,7 +73,7 @@ class MapController extends BaseController<Map> {
       const { name, description } = req.body;
       const { mapId = "" } = req.params;
 
-      const map = await this.findMapById(mapId, req.user.id);
+      const map = await this.findMapById(mapId, req.user.id, false);
 
       if (!map) {
         return res.status(404).json({ message: "Map not found." });
@@ -88,7 +95,7 @@ class MapController extends BaseController<Map> {
     }
   }
 
-  private findMapById(id: string, userId: string) {
+  private findMapById(id: string, userId: string, withLayers: boolean) {
     return this.repository.findOne({
       where: {
         id,
@@ -96,6 +103,7 @@ class MapController extends BaseController<Map> {
           id: userId,
         },
       },
+      relations: withLayers ? ['layers'] : [],
     });
   }
 }

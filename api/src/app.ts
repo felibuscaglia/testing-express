@@ -10,6 +10,7 @@ import corsMiddleware from "./middlewares/cors.middleware";
 import entities from "./entities";
 import AuthController from "./controllers/auth.controller";
 import MapController from "./controllers/map.controller";
+import LayerController from "./controllers/layer.controller";
 
 dotenv.config();
 class App {
@@ -54,10 +55,11 @@ class App {
   }
 
   private initializeControllers() {
-    const controllers = [AuthController, MapController];
-    controllers.forEach((Controller) => {
+    const controllers = [AuthController, MapController, LayerController];
+    controllers.map((Controller) => {
       const controllerInstace = new Controller(this.connection);
       this.app.use(controllerInstace.getPath(), controllerInstace.getRouter());
+      return controllerInstace;
     });
   }
 

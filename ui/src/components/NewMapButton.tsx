@@ -1,7 +1,5 @@
 import {
   BTN_CLASSNAMES,
-  MAIN_BRAND_COLOR,
-  TEXT_FONT_FAMILY,
   UNEXPECTED_ERROR_MESSAGE,
 } from "lib/constants";
 import { API_CLIENT as apiClient } from "lib/axios/apiClient";
@@ -9,7 +7,7 @@ import { Plus } from "react-feather";
 import { ICreateMapResponse } from "lib/interfaces";
 import { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { API_PATHS } from "lib/enums";
 import { showToastWithErrorMessage } from "lib/helpers";
 
@@ -20,7 +18,7 @@ const NewMapButton = () => {
     setLoading(true);
     apiClient
       .post<ICreateMapResponse>(API_PATHS.NEW_MAP)
-      .then(({ data }) => (window.location.href = `/maps/${data.mapId}`))
+      .then(({ data }) => (window.location.href = `/edit/${data.mapId}`))
       .catch((err) => {
         let errorMessage = UNEXPECTED_ERROR_MESSAGE;
 

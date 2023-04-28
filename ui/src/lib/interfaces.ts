@@ -18,15 +18,26 @@ export interface ICreateMapResponse {
   mapId: string;
 }
 
+export interface IMapLayer {
+  id: number;
+  name: string;
+}
+
 export interface IMap {
   id: string;
   name: string;
   description?: string;
   updatedAt: string;
+  layers: IMapLayer[];
+}
+
+export interface IMapInput {
+  name: string;
+  description?: string;
 }
 
 export interface IMapInfoEditorComponentProps {
   setDisplayModal: (display: boolean) => void;
-  setUpdatedAt: (date: Date) => void;
-  setLoadingChanges: (loading: boolean) => void;
+  patchMap: (map: IMapInput) => void;
+  map: IMap;
 }

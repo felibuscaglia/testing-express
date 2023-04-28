@@ -3,11 +3,13 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User.entity";
 import { DEFAULT_MAP_NAME } from "../lib/constants";
+import { Layer } from "./Layer";
 
 @Entity()
 export class Map extends BaseEntity {
@@ -27,4 +29,7 @@ export class Map extends BaseEntity {
 
   @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
   updatedAt: Date;
+
+  @OneToMany((type) => Layer, (layer) => layer.map)
+  layers: Layer[];
 }
