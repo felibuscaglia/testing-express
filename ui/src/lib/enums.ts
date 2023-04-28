@@ -8,4 +8,5 @@ export enum API_PATHS {
   CHECK_AUTH = "/auth/check",
   NEW_MAP = "/maps",
   GET_MAP = "/maps",
+  PATCH_MAP = "/maps",
 }

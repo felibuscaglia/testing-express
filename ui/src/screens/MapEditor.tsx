@@ -1,6 +1,7 @@
 import Loading from "components/Loading";
 import Map from "components/Map";
 import MapInfoEditor from "components/MapInfoEditor";
+import { SELECTED_MAP_CONTEXT as SelectedMapContext } from "contexts/SelectedMapContext";
 import { API_CLIENT as apiClient } from "lib/axios/apiClient";
 import { API_PATHS } from "lib/enums";
 import { IMap } from "lib/interfaces";
@@ -29,10 +30,10 @@ const MapEditor = () => {
   if (loading) return <Loading loadingText="Getting map information" />;
 
   return (
-    <main>
-      <MapInfoEditor map={map} />
+    <SelectedMapContext.Provider value={{ map, setMap }}>
+      <MapInfoEditor />
       <Map />
-    </main>
+    </SelectedMapContext.Provider>
   );
 };
 

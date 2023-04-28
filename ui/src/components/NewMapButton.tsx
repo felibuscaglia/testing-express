@@ -11,6 +11,7 @@ import { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import toast, { Toaster } from "react-hot-toast";
 import { API_PATHS } from "lib/enums";
+import { showToastWithErrorMessage } from "lib/helpers";
 
 const NewMapButton = () => {
   const [loading, setLoading] = useState(false);
@@ -27,19 +28,8 @@ const NewMapButton = () => {
           const { data } = err.response;
           errorMessage = data.message;
         }
-        toast.error(errorMessage, {
-          position: "bottom-center",
-          style: {
-            background: MAIN_BRAND_COLOR,
-            padding: "16px",
-            color: "white",
-            fontFamily: TEXT_FONT_FAMILY,
-          },
-          iconTheme: {
-            primary: "red",
-            secondary: "white",
-          },
-        });
+
+        showToastWithErrorMessage(errorMessage);
         setLoading(false);
       });
   };

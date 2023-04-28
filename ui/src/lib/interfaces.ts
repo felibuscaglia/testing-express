@@ -26,7 +26,7 @@ export interface IMap {
 }
 
 export interface IMapInfoEditorComponentProps {
-  name: string;
-  description?: string;
   setDisplayModal: (display: boolean) => void;
+  setUpdatedAt: (date: Date) => void;
+  setLoadingChanges: (loading: boolean) => void;
 }

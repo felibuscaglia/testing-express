@@ -1,4 +1,5 @@
-import { EMAIL_REGEX } from "./constants";
+import { toast } from "react-hot-toast";
+import { EMAIL_REGEX, MAIN_BRAND_COLOR, TEXT_FONT_FAMILY } from "./constants";
 
 export const validateEmail = (email: string) => {
   return EMAIL_REGEX.test(email);
@@ -14,7 +15,10 @@ export const calculateTimeDiff = (date: Date) => {
   let timeString = "";
 
   if (minutesElapsed < 60) {
-    timeString = `${minutesElapsed} minute${minutesElapsed === 1 ? "" : "s"}`;
+    timeString =
+      minutesElapsed == 0
+        ? "a few seconds"
+        : `${minutesElapsed} minute${minutesElapsed === 1 ? "" : "s"}`;
   } else if (hoursElapsed < 24) {
     timeString = `${hoursElapsed} hour${hoursElapsed === 1 ? "" : "s"}`;
   } else {
@@ -22,4 +26,20 @@ export const calculateTimeDiff = (date: Date) => {
   }
 
   return timeString;
+};
+
+export const showToastWithErrorMessage = (errorMessage: string) => {
+  toast.error(errorMessage, {
+    position: "bottom-center",
+    style: {
+      background: MAIN_BRAND_COLOR,
+      padding: "16px",
+      color: "white",
+      fontFamily: TEXT_FONT_FAMILY,
+    },
+    iconTheme: {
+      primary: "red",
+      secondary: "white",
+    },
+  });
 };
