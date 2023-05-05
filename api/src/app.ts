@@ -57,9 +57,9 @@ class App {
   private initializeControllers() {
     const controllers = [AuthController, MapController, LayerController];
     controllers.map((Controller) => {
-      const controllerInstace = new Controller(this.connection);
-      this.app.use(controllerInstace.getPath(), controllerInstace.getRouter());
-      return controllerInstace;
+      const controllerInstance = new Controller(this.connection);
+      this.app.use(controllerInstance.getPath(), controllerInstance.getRouter());
+      return controllerInstance;
     });
   }
 

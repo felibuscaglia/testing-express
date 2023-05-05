@@ -9,4 +9,5 @@ export enum API_PATHS {
   NEW_MAP = "/maps",
   GET_MAP = "/maps",
   PATCH_MAP = "/maps",
+  CREATE_MAP_LAYER = "/layers",
 }

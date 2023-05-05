@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -18,6 +19,10 @@ export class Layer extends BaseEntity {
   @Column({ nullable: false, default: DEFAULT_MAP_LAYER_NAME })
   name: string;
 
+  @Column({ nullable: false })
+  mapId: string;
+
   @ManyToOne((type) => Map, (map) => map.layers)
+  @JoinColumn({ name: "mapId" })
   map: Map;
 }

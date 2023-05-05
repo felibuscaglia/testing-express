@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { User } from "./User.entity";
 import { DEFAULT_MAP_NAME } from "../lib/constants";
-import { Layer } from "./Layer";
+import { Layer } from "./Layer.entity";
 
 @Entity()
 export class Map extends BaseEntity {

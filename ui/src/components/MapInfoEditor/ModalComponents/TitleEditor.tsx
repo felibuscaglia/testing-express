@@ -1,6 +1,6 @@
 import { BTN_CLASSNAMES, SECONDARY_BTN_CLASSNAMES } from "lib/constants";
 import { IMapInfoEditorComponentProps } from "lib/interfaces";
-import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 interface ITitleEditorInput {
