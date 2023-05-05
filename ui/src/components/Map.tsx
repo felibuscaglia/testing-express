@@ -27,7 +27,8 @@ const initializeMap = ({
   });
 
   const geocoderContainer = document.createElement("div");
-  geocoderContainer.className = "flex items-center mt-7 absolute left-1/4 w-4/12";
+  geocoderContainer.className =
+    "flex items-center mt-7 absolute left-1/4 w-4/12";
 
   const searchBtn = document.createElement("button");
   searchBtn.className = "h-10 bg-main-brand-color px-4 relative";
@@ -36,11 +37,19 @@ const initializeMap = ({
   );
   searchBtn.innerHTML = searchIconHTML;
 
-
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
     placeholder: "Search for places around the world",
+  });
+
+  geocoder.on("result", (event) => {
+    const { center, place_name } = event.result;
+    new mapboxgl.Popup({ closeOnClick: true })
+      .setLngLat(center)
+      .setHTML(`<h1 className='font-title'>${place_name}</h1>`)
+      .addTo(map);
+    // new mapboxgl.Marker().setLngLat(center).addTo(map);
   });
 
   //TODO: Loader

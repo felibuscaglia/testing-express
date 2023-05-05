@@ -4,7 +4,7 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "lib/constants";
 import { API_PATHS, MAP_INFO_EDITORS } from "lib/enums";
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useState } from "react";
 import { MoreVertical, PenTool } from "react-feather";
 import Actions from "./Actions";
 import Layer from "./Layer";
@@ -18,6 +18,7 @@ import SavingIndicator from "./SavingIndicator";
 import { API_CLIENT as apiClient } from "lib/axios/apiClient";
 import { showToastWithErrorMessage } from "lib/helpers";
 import { Toaster } from "react-hot-toast";
+import { MapContext } from "contexts/MapContext";
 
 // TODO: Trunc description
 
@@ -28,13 +29,13 @@ interface IMapInfoEditorProps {
 
 const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map, setMap }) => {
   const [displayModal, setDisplayModal] = useState(false);
-  const [
-    selectedMapInfoEditor,
-    setSelectedMapInfoEditor,
-  ] = useState<MAP_INFO_EDITORS | null>(null);
+  const [selectedMapInfoEditor, setSelectedMapInfoEditor] =
+    useState<MAP_INFO_EDITORS | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date>(new Date(map.updatedAt));
   const [mapLayers, setMapLayers] = useState(map.layers);
   const [loadingChanges, setLoadingChanges] = useState<boolean | null>(null);
+
+  const { selectedLayer, setSelectedLayer } = useContext(MapContext);
 
   const handleOpenModal = (mapInfoEditor: MAP_INFO_EDITORS) => {
     setDisplayModal(true);
@@ -72,7 +73,7 @@ const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map, setMap }) => {
     setDisplayModal(false);
 
     apiClient
-      .patch(`${API_PATHS.GET_MAP}/${map.id}`, input)
+      .patch(`${API_PATHS.PATCH_MAP}?mapId=${map.id}`, input)
       .then(() => {
         setLoadingChanges(false);
         setUpdatedAt(new Date());
@@ -124,8 +125,13 @@ const MapInfoEditor: FC<IMapInfoEditorProps> = ({ map, setMap }) => {
           mapId={map.id}
           addMapLayer={addMapLayer}
         />
-        {mapLayers?.map((layer) => (
-          <Layer {...layer} key={`maplayer-${layer.id}`} />
+        {mapLayers?.map((layer, i) => (
+          <Layer
+            layer={layer}
+            isSelected={i === selectedLayer}
+            key={`maplayer-${layer.id}`}
+            onClick={() => setSelectedLayer(i)}
+          />
         ))}
         <button className="px-4 py-1.5 flex items-center text-xs bg-main-brand-color text-white font-text border-x border-b border-main-brand-color hover:bg-transparent hover:text-main-brand-color gap-1">
           <PenTool size={14} />

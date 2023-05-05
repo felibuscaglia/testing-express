@@ -2,8 +2,9 @@ import { DataSource } from "typeorm";
 import { BaseController } from "./base.controller";
 import { Layer } from "../entities";
 import authMiddleware from "../middlewares/auth.middleware";
-import { RequestWithUser } from "types/UserDto.type";
+import { RequestWithUser, RequestWithUserAndMap } from "types/UserDto.type";
 import { Response } from "express";
+import mapMiddleware from "../middlewares/map.middleware";
 
 class LayerController extends BaseController<Layer> {
   constructor(dataSource: DataSource) {
@@ -12,18 +13,19 @@ class LayerController extends BaseController<Layer> {
 
   protected initializeRoutes(): void {
     this.router.use(authMiddleware);
-    this.router.post("/", async (req: RequestWithUser, res: Response) =>
-      this.createLayer(req, res)
+    this.router.use(mapMiddleware);
+    this.router.post(
+      "/",
+      async (req: RequestWithUserAndMap, res: Response) =>
+        await this.createLayer(req, res)
     );
   }
 
-  private async createLayer(req: RequestWithUser, res: Response) {
-    // TODO: Create a Map middleware that sets the map in the request and verifies if it belongs to user.
+  private async createLayer(req: RequestWithUserAndMap, res: Response) {
     try {
-      const { mapId } = req.body;
       const layer = new Layer();
 
-      layer.mapId = mapId;
+      layer.mapId = req.map.id;
 
       await this.repository.save(layer);
       return res.status(201).send({ layer });

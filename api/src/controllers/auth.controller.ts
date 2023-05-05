@@ -26,14 +26,6 @@ class AuthController extends BaseController<User> {
     this.router.get("/check", authMiddleware, (req, res: Response) =>
       this.checkAuth(res)
     );
-    // this.router.use(this.validateInput);
-    // Controller endpoints
-    // this.router.post(this.path + "/login", this.login);
-    // this.router.post(this.path, this.createUser);
-    // this.router.get(this.path, this.getAllUsers);
-    // this.router.get(this.path + "/:id", this.getUser);
-    // this.router.put(this.path + "/:id", this.updateUser);
-    // this.router.delete(this.path + "/:id", this.deleteUser);
   }
 
   private async signIn(req: SignInRequest, res: Response) {

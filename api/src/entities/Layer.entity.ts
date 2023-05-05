@@ -5,9 +5,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Map } from "./Map.entity";
+import { Place } from "./Place.entity";
 
 @Entity({ name: "map_layer" })
 export class Layer extends BaseEntity {
@@ -25,4 +27,7 @@ export class Layer extends BaseEntity {
   @ManyToOne((type) => Map, (map) => map.layers)
   @JoinColumn({ name: "mapId" })
   map: Map;
+
+  @OneToMany((type) => Place, (place) => place.layer)
+  places: Place[];
 }

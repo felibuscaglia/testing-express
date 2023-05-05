@@ -1,7 +1,8 @@
 import { Response } from "express";
 import { BaseController } from "./base.controller";
-import { RequestWithUser } from "types/UserDto.type";
+import { RequestWithUser, RequestWithUserAndMap } from "types/UserDto.type";
 import authMiddleware from "../middlewares/auth.middleware";
+import mapMiddleware from "../middlewares/map.middleware";
 import { Layer, Map } from "../entities";
 import { DataSource, Repository } from "typeorm";
 
@@ -21,12 +22,15 @@ class MapController extends BaseController<Map> {
         await this.createMap(req, res)
     );
     this.router.get(
-      "/:mapId",
-      async (req: RequestWithUser, res: Response) => await this.getMap(req, res)
+      "/",
+      mapMiddleware,
+      async (req: RequestWithUserAndMap, res: Response) =>
+        await this.getMap(req, res)
     );
     this.router.patch(
-      "/:mapId/",
-      async (req: RequestWithUser, res: Response) =>
+      "/",
+      mapMiddleware,
+      async (req: RequestWithUserAndMap, res: Response) =>
         await this.updateMap(req, res)
     );
   }
@@ -51,33 +55,14 @@ class MapController extends BaseController<Map> {
     }
   }
 
-  private async getMap(req: RequestWithUser, res: Response) {
-    try {
-      const { mapId = "" } = req.params;
-
-      const map = await this.findMapById(mapId, req.user.id, true);
-
-      if (!map) {
-        return res.status(404).json({ message: "Map not found." });
-      }
-
-      return res.json(map);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Unable to get map." });
-    }
+  private async getMap(req: RequestWithUserAndMap, res: Response) {
+    return res.json(req.map);
   }
 
-  private async updateMap(req: RequestWithUser, res: Response) {
+  private async updateMap(req: RequestWithUserAndMap, res: Response) {
     try {
       const { name, description } = req.body;
-      const { mapId = "" } = req.params;
-
-      const map = await this.findMapById(mapId, req.user.id, false);
-
-      if (!map) {
-        return res.status(404).json({ message: "Map not found." });
-      }
+      const map = req.map;
 
       if (name) {
         map.name = name;
@@ -93,18 +78,6 @@ class MapController extends BaseController<Map> {
       console.error(err);
       return res.status(500).json({ message: "Unable to update map." });
     }
-  }
-
-  private findMapById(id: string, userId: string, withLayers: boolean) {
-    return this.repository.findOne({
-      where: {
-        id,
-        user: {
-          id: userId,
-        },
-      },
-      relations: withLayers ? ['layers'] : [],
-    });
   }
 }
 

@@ -34,7 +34,7 @@ const Actions: FC<IActionsProps> = ({
     setLoadingAction(BTN_ACTIONS.ADD_LAYER);
     setLoadingChanges(true);
     apiClient
-      .post<{ layer: IMapLayer }>(API_PATHS.CREATE_MAP_LAYER, { mapId })
+      .post<{ layer: IMapLayer }>(`${API_PATHS.CREATE_MAP_LAYER}?mapId=${mapId}`, { mapId })
       .then(({ data }) => {
         addMapLayer(data.layer);
         setLoadingChanges(false);
@@ -45,7 +45,7 @@ const Actions: FC<IActionsProps> = ({
 
         if (err.response) {
           const { data } = err.response;
-          errorMessage = data.message;
+          errorMessage = data.error;
         }
 
         showToastWithErrorMessage(errorMessage);
